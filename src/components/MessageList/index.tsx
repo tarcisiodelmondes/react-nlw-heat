@@ -4,13 +4,15 @@ import logoImg from "../../assets/logo.svg";
 import { useCallback, useEffect, useState } from "react";
 import { api } from "../../services/api";
 import { io } from "socket.io-client";
+import { format, parseISO } from "date-fns";
+import ptBR from "date-fns/locale/pt-BR";
 
 interface Messages {
   id: string;
   text: string;
   user_id: string;
-  created_at: Date;
-  userId: {
+  created_at: string;
+  user: {
     id: string;
     name: string;
     login: string;
@@ -65,13 +67,15 @@ export function MessageList() {
               <p className={styles.messageContent}>{message.text}</p>
               <div className={styles.messageUser}>
                 <div className={styles.userImage}>
-                  <img
-                    src={message.userId.avatar_url}
-                    alt={message.userId.name}
-                  />
+                  <img src={message.user.avatar_url} alt={message.user.name} />
                 </div>
 
-                <span>{message.userId.name}</span>
+                <span>{message.user.name}</span>
+                <span className={styles.dateSendMessage}>
+                  {format(parseISO(message.created_at), "LLL HH:mm:ss", {
+                    locale: ptBR,
+                  })}
+                </span>
               </div>
             </li>
           );

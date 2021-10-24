@@ -28,3 +28,7 @@ body {
 .Toastify__progress-bar {
   background-color: transparent;
 }
+
+.markedPerson {
+  color: #ff008e;
+}

@@ -1,11 +1,12 @@
 import styles from "./styles.module.scss";
 
 import logoImg from "../../assets/logo.svg";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { api } from "../../services/api";
 import { io } from "socket.io-client";
 import { format, parseISO } from "date-fns";
 import ptBR from "date-fns/locale/pt-BR";
+import { ToMarkerPerson } from "../ToMarkPerson";
 
 interface Messages {
   id: string;
@@ -33,7 +34,6 @@ socket.on("new_message", (newMessage: Messages) => {
 
 export function MessageList() {
   const [messages, setMessages] = useState<Messages[]>([]);
-  // [messagesQueue[0], prevState[0], prevState[1]].filter(Boolean)
 
   useEffect(() => {
     setInterval(() => {
@@ -47,7 +47,7 @@ export function MessageList() {
         messagesQueue.shift();
       }
     }, 3000);
-  });
+  }, []);
 
   useEffect(() => {
     async function handleMessage() {
@@ -67,7 +67,9 @@ export function MessageList() {
         {messages.map((message, index) => {
           return (
             <li key={index} className={styles.message}>
-              <p className={styles.messageContent}>{message.text}</p>
+              <div className={styles.messageContent}>
+                <ToMarkerPerson text={message.text} />
+              </div>
               <div className={styles.messageUser}>
                 <div className={styles.userImage}>
                   <img src={message.user.avatar_url} alt={message.user.name} />

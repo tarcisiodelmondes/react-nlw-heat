@@ -33,13 +33,16 @@ socket.on("new_message", (newMessage: Messages) => {
 
 export function MessageList() {
   const [messages, setMessages] = useState<Messages[]>([]);
+  // [messagesQueue[0], prevState[0], prevState[1]].filter(Boolean)
 
   useEffect(() => {
     setInterval(() => {
+      if (messages.length === 20) {
+        messages.pop();
+      }
+
       if (messagesQueue.length > 0) {
-        setMessages((prevState) =>
-          [messagesQueue[0], prevState[0], prevState[1]].filter(Boolean)
-        );
+        setMessages((prevState) => [messagesQueue[0], ...prevState]);
 
         messagesQueue.shift();
       }

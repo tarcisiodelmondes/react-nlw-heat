@@ -18,6 +18,7 @@ type AuthContextData = {
   user: User | null;
   signInUrl: string;
   signOut: () => void;
+  isLoading: boolean;
 };
 
 type AuthProvider = {
@@ -38,12 +39,15 @@ const AuthContext = createContext({} as AuthContextData);
 
 function AuthProvider({ children }: AuthProvider) {
   const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const signInUrl = `https://github.com/login/oauth/authorize?scope=user&client_id=${
     import.meta.env.VITE_GITHUB_CLIENT_ID
   }`;
 
   async function signIn(githubCode: string) {
+    setIsLoading(true);
+
     const { data } = await api.post<AuthResponse>("/authenticate", {
       code: githubCode,
     });
@@ -54,17 +58,27 @@ function AuthProvider({ children }: AuthProvider) {
 
     api.defaults.headers.common.authorization = `Bearer ${token}`;
 
+    setIsLoading(false);
+
     localStorage.setItem("@dowhile:token", token);
   }
 
   useEffect(() => {
     const token = localStorage.getItem("@dowhile:token");
 
-    if (!token) return;
+    if (token) {
+      setIsLoading(true);
 
-    api.defaults.headers.common.authorization = `Bearer ${token}`;
+      api.defaults.headers.common.authorization = `Bearer ${token}`;
 
-    api.get<User>("/profile").then((res) => setUser(res.data));
+      try {
+        api.get<User>("/profile").then((res) => setUser(res.data));
+      } catch (error) {
+        console.warn(error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
   }, []);
 
   function signOut() {
@@ -87,7 +101,7 @@ function AuthProvider({ children }: AuthProvider) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ signInUrl, user, signOut }}>
+    <AuthContext.Provider value={{ signInUrl, user, signOut, isLoading }}>
       {children}
     </AuthContext.Provider>
   );

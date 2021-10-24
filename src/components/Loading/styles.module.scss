@@ -1,0 +1,28 @@
+.container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 1;
+  background-color: transparent;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .icon {
+    transition: transform 0.3;
+    animation: loadingAnimate 1s linear 300ms infinite;
+  }
+
+  @keyframes loadingAnimate {
+    from {
+      transform: translate(0deg);
+    }
+
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}

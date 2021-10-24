@@ -32,3 +32,7 @@ body {
 .markedPerson {
   color: #ff008e;
 }
+
+.emphasisUsername {
+  background-color: rgba(77, 76, 76, 0.576);
+}

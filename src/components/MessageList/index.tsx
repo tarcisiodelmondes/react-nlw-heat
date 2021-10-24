@@ -68,7 +68,10 @@ export function MessageList() {
           return (
             <li key={index} className={styles.message}>
               <div className={styles.messageContent}>
-                <ToMarkerPerson text={message.text} />
+                <ToMarkerPerson
+                  text={message.text}
+                  username={message.user.login}
+                />
               </div>
               <div className={styles.messageUser}>
                 <div className={styles.userImage}>

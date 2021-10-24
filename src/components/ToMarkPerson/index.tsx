@@ -1,13 +1,16 @@
 type ToMarkerPerson = {
   text: string;
+  username: string;
 };
 
-export function ToMarkerPerson({ text }: ToMarkerPerson) {
+export function ToMarkerPerson({ text, username }: ToMarkerPerson) {
   function markerPerson(text: string) {
     const textCut = text.split(" ");
     const textWithMarked = textCut.map((txt) => {
       if (txt.match(/['@']/)) {
-        const textStyled = `<span class="markedPerson">${txt}</span>`;
+        const textStyled = `<span class="markedPerson ${
+          `@${username}` === text ? "emphasisUsername" : ""
+        }">${txt}</span>`;
 
         return textStyled;
       }

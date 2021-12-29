@@ -36,12 +36,6 @@
 - [x] Mostar popup ao enviar mensagem.
 - [x] Scroll-bar com cor diferente do padrão.
 
-<a id="pre-requisitos"></a>
-
-## Demonstração da aplicação
-
-Acesse: <https://react-heat.vercel.app/>
-
 <a id="tecnologias"></a>
 
 ## 🚀 Tecnologias
